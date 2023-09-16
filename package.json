@@ -1,0 +1,11 @@
+{
+  "name": "radicalvpn_wg-adapter",
+  "version": "0.0.1",
+  "description": "A Wireguard Adapter for the RadicalVPN Service. This service MUST be deployed on every vpn node.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
