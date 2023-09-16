@@ -49,7 +49,8 @@ import { fileExists } from "./util"
         await redisClient.executeIsolated(async (client) => {
             console.log(`Subscribing to redis event '${alias}'`)
 
-            await client.subscribe(alias, async (data) => {
+            await client.subscribe(alias, async (data, channel) => {
+                console.debug(`Received event '${channel}' with data '${data}'`)
                 await func(data)
             })
         })
