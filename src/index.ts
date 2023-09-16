@@ -16,43 +16,44 @@ import { fileExists } from "./util"
     }
 
     console.log("Connecting to redis..")
-
-    const publisher = await Redis.getInstance("pub")
-    const subscriber = await Redis.getInstance("sub")
-
-    console.log("Subscribing to redis events..")
+    const redisClient = await Redis.getInstance()
 
     const listener = [
         {
-            alias: "ping",
+            alias: `ping:${os.hostname()}`,
             func: async (data: string) => {
-                await new PingEvent(publisher).handle()
+                await new PingEvent(redisClient).handle()
             },
         },
         {
             alias: `start_interface:${os.hostname()}`,
             func: async (data: string) => {
-                await new StartInterfaceEvent(publisher).handle()
+                await new StartInterfaceEvent(redisClient).handle()
             },
         },
         {
             alias: `publish_config:${os.hostname()}`,
             func: async (data: string) => {
-                await new PublishConfigEvent(publisher, data).handle()
+                await new PublishConfigEvent(redisClient, data).handle()
             },
         },
         {
             alias: `stats:${os.hostname()}`,
             func: async (data: string) => {
-                await new StatsEvent(publisher).handle()
+                await new StatsEvent(redisClient).handle()
             },
         },
     ]
 
-    listener.forEach(({ alias, func }) => {
-        console.log(`Subscribing to redis event '${alias}'`)
-        subscriber.on(alias, func)
-    })
+    for (const { alias, func } of listener) {
+        await redisClient.executeIsolated(async (client) => {
+            console.log(`Subscribing to redis event '${alias}'`)
+
+            await client.subscribe(alias, async (data) => {
+                await func(data)
+            })
+        })
+    }
 
     console.log(`Starting RadicalVON Wireguard Adapter on '${hostname}'`)
 })()

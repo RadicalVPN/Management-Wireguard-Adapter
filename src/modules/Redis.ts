@@ -9,8 +9,22 @@ export class Redis {
             return existingClient
         }
 
+        const url = process.env.REDIS_URL
+        if (!url) {
+            throw new Error("missing REDIS_URL env variable")
+        }
+
         const newClient = redis
-            .createClient()
+            .createClient({
+                url,
+                isolationPoolOptions: {
+                    min: 5,
+                    max: 50,
+                },
+                socket: {
+                    reconnectStrategy: false,
+                },
+            })
             .on("error", (err) =>
                 console.error(
                     "failed to connect to redis server:",
