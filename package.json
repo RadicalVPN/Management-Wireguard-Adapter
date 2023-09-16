@@ -4,8 +4,23 @@
   "description": "A Wireguard Adapter for the RadicalVPN Service. This service MUST be deployed on every vpn node.",
   "main": "index.js",
   "scripts": {
+    "start": "npx nodemon",
+    "format": "npx prettier . --write",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC"
+  "author": "Johann",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.5.7",
+    "nodemon": "^3.0.1",
+    "prettier": "3.0.3",
+    "prettier-plugin-organize-imports": "^3.2.3",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "qrcode": "^1.5.3",
+    "redis": "^4.6.8"
+  }
 }
