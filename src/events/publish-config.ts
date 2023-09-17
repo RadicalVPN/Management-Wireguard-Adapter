@@ -13,7 +13,6 @@ export class PublishConfigEvent extends RedisEvent {
     }
 
     async handle() {
-        await Bun.write("/etc/wireguard/wg0.conf", this.config)
-        await exec(["wg", "syncconf", "wg0", "<(wg-quick strip wg0)"])
+        await exec(["wg", "syncconf", "wg0", "/etc/wireguard/wg0.conf"])
     }
 }
