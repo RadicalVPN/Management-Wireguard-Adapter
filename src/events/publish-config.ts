@@ -1,7 +1,6 @@
-import * as fs from "fs/promises"
 import * as redis from "redis"
-import { RedisEvent } from "../RedisEvent"
-import { exec } from "../util"
+import { RedisEvent } from "../RedisEvent.js"
+import { exec } from "../util.js"
 
 export class PublishConfigEvent extends RedisEvent {
     readonly client: redis.RedisClientType
@@ -14,10 +13,7 @@ export class PublishConfigEvent extends RedisEvent {
     }
 
     async handle() {
-        await fs.writeFile("/etc/wireguard/wg0.conf", this.config, {
-            mode: 0o600,
-        })
-
-        await exec("wg syncconf wg0 <(wg-quick strip wg0)")
+        await Bun.write("/etc/wireguard/wg0.conf", this.config)
+        await exec(["wg", "syncconf", "wg0", "<(wg-quick strip wg0"])
     }
 }

@@ -1,6 +1,6 @@
 import * as os from "os"
 import * as redis from "redis"
-import { RedisEvent } from "../RedisEvent"
+import { RedisEvent } from "../RedisEvent.js"
 
 export class PingEvent extends RedisEvent {
     readonly client: redis.RedisClientType

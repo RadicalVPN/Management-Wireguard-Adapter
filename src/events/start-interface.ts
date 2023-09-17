@@ -1,6 +1,6 @@
 import * as redis from "redis"
-import { RedisEvent } from "../RedisEvent"
-import { exec } from "../util"
+import { RedisEvent } from "../RedisEvent.js"
+import { exec } from "../util.js"
 
 export class StartInterfaceEvent extends RedisEvent {
     readonly client: redis.RedisClientType
@@ -11,6 +11,6 @@ export class StartInterfaceEvent extends RedisEvent {
     }
 
     async handle() {
-        await exec("wg-quick up wg0")
+        await exec(["wg-quick", "up", "wg0"])
     }
 }
