@@ -1,5 +1,5 @@
 import * as redis from "redis"
-import { RedisEvent } from "../RedisEvent.js"
+import { RedisEvent } from "../redis-event.js"
 import { exec } from "../util.js"
 
 export class StartInterfaceEvent extends RedisEvent {

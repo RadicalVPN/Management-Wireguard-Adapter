@@ -1,11 +1,11 @@
-import { Elysia } from "elysia"
 import * as fs from "fs/promises"
 import os from "os"
 import { PingEvent } from "./events/ping.js"
 import { PublishConfigEvent } from "./events/publish-config.js"
 import { StartInterfaceEvent } from "./events/start-interface.js"
-import { Redis } from "./modules/Redis.js"
-import { exec, fileExists } from "./util.js"
+import { Redis } from "./modules/redis.js"
+import { PerformanceMonitoring } from "./performance-monitoring.js"
+import { fileExists } from "./util.js"
 
 const platform = os.platform()
 const hostname = os.hostname()
@@ -50,10 +50,6 @@ for (const { alias, func } of listener) {
     })
 }
 
-new Elysia()
-    .get("/metrics", async () => {
-        return await exec(["wg", "show", "wg0", "dump"])
-    })
-    .listen(8080)
+new PerformanceMonitoring().startMonitoring()
 
 console.log(`Starting RadicalVON Wireguard Adapter on '${hostname}'`)
