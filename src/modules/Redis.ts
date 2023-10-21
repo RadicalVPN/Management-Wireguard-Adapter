@@ -22,7 +22,7 @@ export class Redis {
                     max: 50,
                 },
                 socket: {
-                    reconnectStrategy: false,
+                    reconnectStrategy: 1000,
                 },
             })
             .on("error", (err) =>

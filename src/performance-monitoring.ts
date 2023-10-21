@@ -61,12 +61,35 @@ export class PerformanceMonitoring {
                     const rx =
                         vpn.transferRx - this.lastStats[vpn.publicKey]?.rx || 0
 
+                    const onlineStateCacheKey = `vpn_connection_state:${vpn.publicKey}`
+                    const onlineStateCache =
+                        await redis.get(onlineStateCacheKey)
+
+                    let connectedState: boolean
+                    if (onlineStateCache) {
+                        connectedState = JSON.parse(onlineStateCache)
+                    } else {
+                        connectedState =
+                            vpn.transferRx !==
+                                this.lastStats[vpn.publicKey]?.rx &&
+                            vpn.transferTx !== this.lastStats[vpn.publicKey]?.tx
+
+                        await redis.set(
+                            onlineStateCacheKey,
+                            JSON.stringify(connectedState),
+                            {
+                                EX: 15,
+                            },
+                        )
+                    }
+
                     await redis.set(
                         `vpn_stats:${hostname}:${vpn.publicKey}`,
                         JSON.stringify({
                             ...vpn,
                             tx,
                             rx,
+                            connected: connectedState,
                         }),
                         {
                             EX: 120,
