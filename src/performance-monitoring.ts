@@ -66,21 +66,24 @@ export class PerformanceMonitoring {
                         await redis.get(onlineStateCacheKey)
 
                     let connectedState: boolean
+
                     if (onlineStateCache) {
-                        connectedState = JSON.parse(onlineStateCache)
+                        connectedState = true
                     } else {
                         connectedState =
                             vpn.transferRx !==
                                 this.lastStats[vpn.publicKey]?.rx &&
                             vpn.transferTx !== this.lastStats[vpn.publicKey]?.tx
 
-                        await redis.set(
-                            onlineStateCacheKey,
-                            JSON.stringify(connectedState),
-                            {
-                                EX: 15,
-                            },
-                        )
+                        if (connectedState === true) {
+                            await redis.set(
+                                onlineStateCacheKey,
+                                JSON.stringify(connectedState),
+                                {
+                                    EX: 15,
+                                },
+                            )
+                        }
                     }
 
                     await redis.set(
