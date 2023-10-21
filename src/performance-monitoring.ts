@@ -31,7 +31,7 @@ export class PerformanceMonitoring {
             latestHandshakeAt:
                 latestHandshakeAt === "0"
                     ? null
-                    : new Date(`${parseInt(latestHandshakeAt)}000`),
+                    : new Date(parseInt(latestHandshakeAt) * 1000),
             transferRx: parseInt(transferRx),
             transferTx: parseInt(transferTx),
             persistentKeepalive,
