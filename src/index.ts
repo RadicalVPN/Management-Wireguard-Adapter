@@ -1,10 +1,10 @@
 import * as fs from "fs/promises"
 import os from "os"
 import { PingEvent } from "./events/ping.js"
-import { PublishConfigEvent } from "./events/publish-config.js"
 import { StartInterfaceEvent } from "./events/start-interface.js"
 import { Redis } from "./modules/redis.js"
 import { PerformanceMonitoring } from "./performance-monitoring.js"
+import { PublishQueue } from "./publish-queue.js"
 import { fileExists } from "./util.js"
 
 const platform = os.platform()
@@ -31,12 +31,6 @@ const listener = [
             await new StartInterfaceEvent(redisClient).handle()
         },
     },
-    {
-        alias: `publish_config:${os.hostname()}`,
-        func: async (data: string) => {
-            await new PublishConfigEvent(redisClient, data).handle()
-        },
-    },
 ]
 
 for (const { alias, func } of listener) {
@@ -44,12 +38,13 @@ for (const { alias, func } of listener) {
         console.log(`Subscribing to redis event '${alias}'`)
 
         await client.subscribe(alias, async (data, channel) => {
-            console.debug(`Received event '${channel}' with data '${data}'`)
-            await func(data)
+            console.debug(`Received event '${channel}'`)
+            await func()
         })
     })
 }
 
 new PerformanceMonitoring().startMonitoring()
+await new PublishQueue().startWorker()
 
 console.log(`Starting RadicalVON Wireguard Adapter on '${hostname}'`)

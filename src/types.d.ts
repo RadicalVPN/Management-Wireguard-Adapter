@@ -4,3 +4,7 @@ export interface ITrafficStats {
         tx: number
     }
 }
+
+export interface ConfigPublishEvent {
+    config: string
+}
