@@ -7,7 +7,7 @@ export class PublishQueue {
     private async processJob(job: Job<ConfigPublishEvent>) {
         console.log(`Publishing config for ${job.name} - ${job.id}`)
 
-        //await Bun.write("/etc/wireguard/wg0.conf", job.data.config)
+        await Bun.write("/etc/wireguard/wg0.conf", job.data.config)
         await exec(["wg", "syncconf", "wg0", "/etc/wireguard/wg0.conf"])
     }
 
