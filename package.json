@@ -6,7 +6,6 @@
     "scripts": {
         "start": "bun run build/wg-adapter.js",
         "format": "bun run prettier . --write",
-        "build": "bun build --target=bun src/index.ts --outfile build/wg-adapter.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "Johann",
