@@ -72,7 +72,7 @@ export class PerformanceMonitoring {
                     } else {
                         connectedState =
                             vpn.transferRx !==
-                                this.lastStats[vpn.publicKey]?.rx &&
+                                this.lastStats[vpn.publicKey]?.rx ||
                             vpn.transferTx !== this.lastStats[vpn.publicKey]?.tx
 
                         if (connectedState === true) {
