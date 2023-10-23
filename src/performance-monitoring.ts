@@ -77,7 +77,7 @@ export class PerformanceMonitoring {
 
                         if (connectedState === true) {
                             await redis.set(onlineStateCacheKey, "dummy", {
-                                EX: 15,
+                                EX: 120,
                             })
                         }
                     }
