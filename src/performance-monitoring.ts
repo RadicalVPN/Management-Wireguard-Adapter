@@ -70,10 +70,12 @@ export class PerformanceMonitoring {
                     if (onlineStateCache) {
                         connectedState = true
                     } else {
+                        const lastRx = this.lastStats[vpn.publicKey]?.rx || 0
+                        const lastTx = this.lastStats[vpn.publicKey]?.tx || 0
+
                         connectedState =
-                            vpn.transferRx !==
-                                this.lastStats[vpn.publicKey]?.rx ||
-                            vpn.transferTx !== this.lastStats[vpn.publicKey]?.tx
+                            vpn.transferRx !== lastRx ||
+                            vpn.transferTx !== lastTx
 
                         if (connectedState === true) {
                             await redis.set(onlineStateCacheKey, "dummy", {
