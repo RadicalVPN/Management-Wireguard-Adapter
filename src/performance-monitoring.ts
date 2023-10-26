@@ -54,6 +54,8 @@ export class PerformanceMonitoring {
                 return acc
             }, {} as ITrafficStats)
 
+            let redisResults = {} as Record<string, any>
+
             await Promise.all(
                 parsed.map(async (vpn) => {
                     const tx =
@@ -84,20 +86,16 @@ export class PerformanceMonitoring {
                         }
                     }
 
-                    await redis.set(
-                        `vpn_stats:${hostname}:${vpn.publicKey}`,
-                        JSON.stringify({
-                            ...vpn,
-                            tx,
-                            rx,
-                            connected: connectedState,
-                        }),
-                        {
-                            EX: 120,
-                        },
-                    )
+                    redisResults[vpn.publicKey] = {
+                        ...vpn,
+                        tx,
+                        rx,
+                        connected: connectedState,
+                    }
                 }),
             )
+
+            await redis.json.set(`vpn_stats:${hostname}`, "$", redisResults)
 
             //apply the latest stats
             this.lastStats = currentStats
