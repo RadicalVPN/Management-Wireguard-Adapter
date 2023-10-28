@@ -5,7 +5,7 @@ import { StartInterfaceEvent } from "./events/start-interface.js"
 import { Redis } from "./modules/redis.js"
 import { PerformanceMonitoring } from "./performance-monitoring.js"
 import { PublishQueue } from "./publish-queue.js"
-import { fileExists } from "./util.js"
+import { fileExists, initWireguardInterface } from "./util.js"
 
 const platform = os.platform()
 const hostname = os.hostname()
@@ -14,6 +14,8 @@ if (!(await fileExists("/etc/wireguard")) && platform === "linux") {
     console.log("Initial created wireguard directory")
     await fs.mkdir("/etc/wireguard")
 }
+
+await initWireguardInterface()
 
 console.log("Connecting to redis..")
 const redisClient = await Redis.getInstance()
