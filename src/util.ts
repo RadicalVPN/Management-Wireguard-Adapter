@@ -13,8 +13,8 @@ export async function initWireguardInterface() {
     await exec(["ip", "link", "delete", "dev", "wg0"])
 
     await exec(["ip", "link", "add", "dev", "wg0", "type", "wireguard"])
-    await exec(["ip", "address", "add", "dev", "wg0", "10.0.0.2/16"])
-    await exec(["ip", "address", "add", "dev", "wg0", "fd8f:a1fb:a69e::2/112"])
+    await exec(["ip", "address", "add", "dev", "wg0", "10.0.0.1/16"])
+    await exec(["ip", "address", "add", "dev", "wg0", "fd8f:a1fb:a69e::1/112"])
     await exec(["wg", "setconf", "wg0", "/etc/wireguard/wg0.conf"])
     await exec(["ip", "link", "set", "up", "dev", "wg0"])
 }
