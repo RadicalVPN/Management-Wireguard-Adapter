@@ -72,8 +72,10 @@ export class PerformanceMonitoring {
                     if (onlineStateCache) {
                         connectedState = true
                     } else {
-                        const lastRx = this.lastStats[vpn.publicKey]?.rx || 0
-                        const lastTx = this.lastStats[vpn.publicKey]?.tx || 0
+                        const lastRx =
+                            this.lastStats[vpn.publicKey]?.rx || vpn.transferRx
+                        const lastTx =
+                            this.lastStats[vpn.publicKey]?.tx || vpn.transferTx
 
                         connectedState =
                             vpn.transferRx !== lastRx ||
