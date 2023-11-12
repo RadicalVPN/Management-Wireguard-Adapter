@@ -45,7 +45,7 @@ export class PerformanceMonitoring {
             const hostname = os.hostname()
             const parsed = this.parseRawStats(data)
 
-            const currentStats = await parsed.reduce((acc, vpn) => {
+            const currentStats = parsed.reduce((acc, vpn) => {
                 acc[vpn.publicKey] = {
                     rx: vpn.transferRx,
                     tx: vpn.transferTx,
