@@ -56,16 +56,17 @@ export class PerformanceMonitoring {
 
             let redisResults = {} as Record<string, any>
 
+            const connectioResults = await redis.mGet(
+                parsed.map((vpn) => `vpn_connection_state:${vpn.publicKey}`),
+            )
             await Promise.all(
-                parsed.map(async (vpn) => {
+                parsed.map(async (vpn, i) => {
                     const tx =
                         vpn.transferTx - this.lastStats[vpn.publicKey]?.tx || 0
                     const rx =
                         vpn.transferRx - this.lastStats[vpn.publicKey]?.rx || 0
 
-                    const onlineStateCacheKey = `vpn_connection_state:${vpn.publicKey}`
-                    const onlineStateCache =
-                        await redis.get(onlineStateCacheKey)
+                    const onlineStateCache = connectioResults[i]
 
                     let connectedState: boolean
 
@@ -82,9 +83,13 @@ export class PerformanceMonitoring {
                             vpn.transferTx !== lastTx
 
                         if (connectedState === true) {
-                            await redis.set(onlineStateCacheKey, "dummy", {
-                                EX: 30,
-                            })
+                            await redis.set(
+                                `vpn_connection_state:${vpn.publicKey}`,
+                                "dummy",
+                                {
+                                    EX: 30,
+                                },
+                            )
                         }
                     }
 
