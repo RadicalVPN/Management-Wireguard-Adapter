@@ -45,6 +45,12 @@ export class PerformanceMonitoring {
             const hostname = os.hostname()
             const parsed = this.parseRawStats(data)
 
+            if (parsed.length === 0) {
+                //nothing to do here, prob. a fresh server
+                console.log("skip monitoring, no peers")
+                return
+            }
+
             const currentStats = parsed.reduce((acc, vpn) => {
                 acc[vpn.publicKey] = {
                     rx: vpn.transferRx,
