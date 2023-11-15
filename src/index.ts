@@ -42,4 +42,4 @@ for (const { alias, func } of listener) {
 new PerformanceMonitoring().startMonitoring()
 await new PublishQueue().startWorker()
 
-console.log(`Starting RadicalVON Wireguard Adapter on '${hostname}'`)
+console.log(`Starting RadicalVPN Wireguard Adapter on '${hostname}'`)
