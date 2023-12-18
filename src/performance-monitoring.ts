@@ -1,5 +1,6 @@
 import os from "os"
 import { Redis } from "./modules/redis.js"
+import { PrivacyFirewall } from "./privacy-firewall.js"
 import { ITrafficStats } from "./types.js"
 import { exec } from "./util.js"
 
@@ -50,6 +51,8 @@ export class PerformanceMonitoring {
                 console.log("skip monitoring, no peers")
                 return
             }
+
+            console.log("checking", parsed.length, "peers")
 
             const currentStats = parsed.reduce((acc, vpn) => {
                 acc[vpn.publicKey] = {
@@ -106,6 +109,12 @@ export class PerformanceMonitoring {
                         connected: connectedState,
                     }
                 }),
+            )
+
+            await redis.json.set(
+                `privacy_firewall_stats:${hostname}`,
+                "$",
+                await new PrivacyFirewall().fetchMetrics(),
             )
 
             await redis.json.set(`vpn_stats:${hostname}`, "$", redisResults)

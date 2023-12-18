@@ -1,29 +1,30 @@
 {
-    "name": "radicalvpn_wg-adapter",
-    "version": "0.0.1",
-    "description": "A Wireguard Adapter for the RadicalVPN Service. This service MUST be deployed on every vpn node.",
-    "main": "index.js",
-    "scripts": {
-        "start": "bun run build/wg-adapter.js",
-        "format": "bun run prettier . --write",
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "author": "Johann",
-    "license": "ISC",
-    "devDependencies": {
-        "@types/node": "^20.5.7",
-        "bun-types": "^1.0.2",
-        "nodemon": "^3.0.1",
-        "prettier": "3.0.3",
-        "prettier-plugin-organize-imports": "^3.2.3",
-        "ts-node": "^10.9.1",
-        "typescript": "^5.2.2"
-    },
-    "dependencies": {
-        "bullmq": "^4.12.5",
-        "dotenv": "^16.3.1",
-        "elysia": "^0.6.23",
-        "redis": "^4.6.8"
-    },
-    "type": "module"
+  "name": "radicalvpn_wg-adapter",
+  "version": "0.0.1",
+  "description": "A Wireguard Adapter for the RadicalVPN Service. This service MUST be deployed on every vpn node.",
+  "main": "index.js",
+  "scripts": {
+    "start": "bun run build/wg-adapter.js",
+    "format": "bun run prettier . --write",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Johann",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.5.7",
+    "bun-types": "^1.0.2",
+    "nodemon": "^3.0.1",
+    "prettier": "3.0.3",
+    "prettier-plugin-organize-imports": "^3.2.3",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "axios": "^1.6.2",
+    "bullmq": "^4.12.5",
+    "dotenv": "^16.3.1",
+    "parse-prometheus-text-format": "^1.1.1",
+    "redis": "^4.6.8"
+  },
+  "type": "module"
 }
