@@ -11,7 +11,7 @@
   "author": "Johann",
   "license": "ISC",
   "devDependencies": {
-    "@types/node": "^20.5.7",
+    "@types/node": "^20.11.5",
     "bun-types": "^1.0.2",
     "nodemon": "^3.0.1",
     "prettier": "3.0.3",
